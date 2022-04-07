@@ -1,10 +1,11 @@
-import django
+
 
 
 from django.shortcuts import render
 from django.http import HttpResponse
-def index_view(request):
-    return HttpResponse("<h1>home page</h1>")
+def index(request):
+    return render(request,'index.html')
+
 def about_me(request):
     return HttpResponse("<h1>about me page</h1>")
 
