@@ -1,10 +1,12 @@
 
+from unicodedata import name
 from django.urls import path,include
 from website.views import *
+app_name="website"
 
 urlpatterns = [
-    path('',index),
-    path('aboutme/',about_me),
-    path('contactme/',contact)
+    path('',index,name="index"),
+    path('about/',about,name="about"),
+    path('contact/',contact,name="contact")
 
 ]

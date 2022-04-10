@@ -4,12 +4,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 def index(request):
-    return render(request,'index.html')
+    return render(request,'website/index.html')
 
-def about_me(request):
-    return render(request,'about_me.html')
+def about(request):
+    return render(request,'website/about.html')
 
 def contact(request):
-    return render(request,'contact.html')
+    return render(request,'website/contact.html')
     
 
