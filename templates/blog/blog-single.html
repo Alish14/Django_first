@@ -67,11 +67,11 @@
 								<a href="#"><img class="img-fluid" src="{% static 'img/blog/prev.jpg'%}" alt=""></a>
 							</div>
 							<div class="arrow">
-								<a href="{% url 'blog:single' pid=post.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
+								<a href="{% url 'blog:single' previous_pid=post.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
 							</div>
 							<div class="detials">
 								<p>Prev Post</p>
-								<a href="{% url 'blog:single' pid=post.id %}">
+								<a href="{% url 'blog:single' previous_pid=post.id %}>
 									<h4>Space The Final Frontier</h4>
 								</a>
 							</div>
@@ -86,10 +86,10 @@
 								</a>
 							</div>
 							<div class="arrow">
-								<a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
+								<a href="{% url 'blog:single' next_pid=post.id %}"><span class="lnr text-white lnr-arrow-right"></span></a>
 							</div>
 							<div class="thumb">
-								<a href="#"><img class="img-fluid" src="{% static 'img/blog/next.jpg'%}" alt=""></a>
+								<a href="{% url 'blog:single' next_pid=post.id %}"><img class="img-fluid" src="{% static 'img/blog/next.jpg'%}" alt=""></a>
 							</div>
 						</div>{% endif %}
 					</div>
