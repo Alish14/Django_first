@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load blog_tags %}
 {% block body %}
 <!-- start banner Area -->
 <section class="relative about-banner">
@@ -32,13 +33,15 @@
 					</div>
 					<div class="col-lg-3  col-md-3 meta-details">
 						<ul class="tags">
-							<li><a href="#">{{post.category.all|join:", " }}</a></li>
+							{% for cat in post.category.all %}
+							    <a href="#">{{ cat.name }}</a>{% if not forloop.last %},{% endif %}
+							{% endfor %}
 							
 						</ul>
 						<div class="user-details row">
 							<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span
 									class="lnr lnr-user"></span></p>
-							<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date}}</a> <span
+							<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"D M Y"}}</a> <span
 									class="lnr lnr-calendar-full"></span></p>
 							<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.contact_views}}</a> <span
 									class="lnr lnr-eye"></span></p>
@@ -67,11 +70,11 @@
 								<a href="#"><img class="img-fluid" src="{% static 'img/blog/prev.jpg'%}" alt=""></a>
 							</div>
 							<div class="arrow">
-								<a href="{% url 'blog:single' previous_pid=post.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
+								<a href="{% url 'blog:single' pid=previous_pid %}"><span class="lnr text-white lnr-arrow-left"></span></a>
 							</div>
 							<div class="detials">
 								<p>Prev Post</p>
-								<a href="{% url 'blog:single' previous_pid=post.id %}>
+								<a href="{% url 'blog:single' pid=previous_pid %}">
 									<h4>Space The Final Frontier</h4>
 								</a>
 							</div>
@@ -86,10 +89,10 @@
 								</a>
 							</div>
 							<div class="arrow">
-								<a href="{% url 'blog:single' next_pid=post.id %}"><span class="lnr text-white lnr-arrow-right"></span></a>
+								<a href="{% url 'blog:single' pid=next_pid %}"><span class="lnr text-white lnr-arrow-right"></span></a>
 							</div>
 							<div class="thumb">
-								<a href="{% url 'blog:single' next_pid=post.id %}"><img class="img-fluid" src="{% static 'img/blog/next.jpg'%}" alt=""></a>
+								<a href="{% url 'blog:single' pid=next_pid %}"><img class="img-fluid" src="{% static 'img/blog/next.jpg'%}" alt=""></a>
 							</div>
 						</div>{% endif %}
 					</div>
@@ -220,142 +223,26 @@
 			</div>
 			<div class="col-lg-4 sidebar-widgets">
 				<div class="widget-wrap">
-					<div class="single-sidebar-widget search-widget">
-						<form class="search-form" action="#">
-							<input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''"
-								onblur="this.placeholder = 'Search Posts'">
-							<button type="submit"><i class="fa fa-search"></i></button>
-						</form>
-					</div>
-					<div class="single-sidebar-widget user-info-widget">
-						<img src="{% static 'img/blog/user-info.png'%}" alt="">
-						<a href="#">
-							<h4>Charlie Barber</h4>
-						</a>
-						<p>
-							Senior blog writer
-						</p>
-						<ul class="social-links">
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-github"></i></a></li>
-							<li><a href="#"><i class="fa fa-behance"></i></a></li>
-						</ul>
-						<p>
-							Boot camps have its supporters andit sdetractors. Some people do not understand why you
-							should have to spend money on boot camp when you can get. Boot camps have itssuppor ters
-							andits detractors.
-						</p>
-					</div>
-					<div class="single-sidebar-widget popular-post-widget">
-						<h4 class="popular-title">Popular Posts</h4>
-						<div class="popular-post-list">
-							<div class="single-post-list d-flex flex-row align-items-center">
-								<div class="thumb">
-									<img class="img-fluid" src="{% static 'img/blog/pp1.jpg'%}" alt="">
-								</div>
-								<div class="details">
-									<a href="blog-single.html">
-										<h6>Space The Final Frontier</h6>
-									</a>
-									<p>02 Hours ago</p>
-								</div>
-							</div>
-							<div class="single-post-list d-flex flex-row align-items-center">
-								<div class="thumb">
-									<img class="img-fluid" src="{% static 'img/blog/pp2.jpg'%}" alt="">
-								</div>
-								<div class="details">
-									<a href="blog-single.html">
-										<h6>The Amazing Hubble</h6>
-									</a>
-									<p>02 Hours ago</p>
-								</div>
-							</div>
-							<div class="single-post-list d-flex flex-row align-items-center">
-								<div class="thumb">
-									<img class="img-fluid" src="{% static 'img/blog/pp3.jpg'%}" alt="">
-								</div>
-								<div class="details">
-									<a href="blog-single.html">
-										<h6>Astronomy Or Astrology</h6>
-									</a>
-									<p>02 Hours ago</p>
-								</div>
-							</div>
-							<div class="single-post-list d-flex flex-row align-items-center">
-								<div class="thumb">
-									<img class="img-fluid" src="{% static 'img/blog/pp4.jpg'%}" alt="">
-								</div>
-								<div class="details">
-									<a href="blog-single.html">
-										<h6>Asteroids telescope</h6>
-									</a>
-									<p>02 Hours ago</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="single-sidebar-widget ads-widget">
-						<a href="#"><img class="img-fluid" src="{% static 'img/blog/ads-banner.jpg'%}" alt=""></a>
-					</div>
-					<div class="single-sidebar-widget post-category-widget">
-						<h4 class="category-title">Post Catgories</h4>
-						<ul class="cat-list">
-							<li>
-								<a href="#" class="d-flex justify-content-between">
-									<p>{{posts.category.all|join:", " }}</p>
-									<p>37</p>
-								</a>
-							</li>
-						</ul>
-					</div>
-					<div class="single-sidebar-widget newsletter-widget">
-						<h4 class="newsletter-title">Newsletter</h4>
-						<p>
-							Here, I focus on a range of items and features that we use in life without
-							giving them a second thought.
-						</p>
-						<div class="form-group d-flex flex-row">
-							<div class="col-autos">
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
-										</div>
-									</div>
-									<input type="text" class="form-control" id="inlineFormInputGroup"
-										placeholder="Enter email" onfocus="this.placeholder = ''"
-										onblur="this.placeholder = 'Enter email'">
-								</div>
-							</div>
-							<a href="#" class="bbtns">Subcribe</a>
-						</div>
-						<p class="text-bottom">
-							You can unsubscribe at any time
-						</p>
-					</div>
-					<div class="single-sidebar-widget tag-cloud-widget">
-						<h4 class="tagcloud-title">Tag Clouds</h4>
-						<ul>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Fashion</a></li>
-							<li><a href="#">Architecture</a></li>
-							<li><a href="#">Fashion</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Lifestyle</a></li>
-							<li><a href="#">Art</a></li>
-							<li><a href="#">Adventure</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Lifestyle</a></li>
-							<li><a href="#">Adventure</a></li>
-						</ul>
-					</div>
+				{% include 'blog/blog-search.html' %}
+				{% include 'blog/blog-writer.html' %}
+				{% include 'blog/blog-popular-post.html' %}
+				{% include 'blog/blog-ads.html' %}
+				{% include 'blog/blog-post-category.html' %}
+				{% include 'blog/blog-newsletter.html' %}
+				{% include 'blog/blog-tags.html' %}
 				</div>
 			</div>
 		</div>
 	</div>
-</section>
+</section>	
+					
+                   
+					
+					
+					
+					
+					
+				
 <!-- End post-content Area -->
 
 <!-- start footer Area -->

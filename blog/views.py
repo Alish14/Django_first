@@ -9,8 +9,8 @@ def blog_view(request):
     context ={'posts':posts}
     return render(request,'blog/blog-home.html',context)
 def blog_single(request,pid):
-    posts=get_object_or_404(Post,pk=pid,status=1)
     posts=Post.objects.update(contact_views=F("contact_views")+1)
+    posts=get_object_or_404(Post,pk=pid,status=1)
     if Post.objects.filter(pk=pid+1).exists():
         has_next=True
         
@@ -26,14 +26,12 @@ def blog_single(request,pid):
     previous_pid=pid-1
     context={'post':posts,'pid':pid,'has_next':has_next,'has_previous':has_previous,'next_pid':next_pid,'previous_pid':previous_pid}
     return render(request,'blog/blog-single.html',context)
-def test(request,pid):
+def test(request):
     # posts=Post.objects.filter()
-    list_post=list(Post.objects.all())
-    posts=get_object_or_404(Post,pk=pid,status=1)
-    next_post=get_object_or_404(Post,pk=pid+1)
-    prev_post=get_object_or_404(Post,pk=pid-1)
+    
+    posts=Post.objects.filter(status=1)
 
-    context = {'list_post':list_post,'post':posts,'next_post':next_post,'prev_post':prev_post}
+    context = {'post':posts}
     return render(request,'test.html',context)
     
     
