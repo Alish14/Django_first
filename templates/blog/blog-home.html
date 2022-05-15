@@ -90,12 +90,15 @@
 							<div class="single-post row">
 								<div class="col-lg-3  col-md-3 meta-details">
 									<ul class="tags">
-										{{post.category.all|join:", " }}
+										{% for cat in post.category.all %}
+										<li><a href="{% url 'blog:category' cat_name=cat.name %}">{{ cat.name }}</a>{% if not forloop.last %},{% endif %}</li>
+										{% endfor %}
+										
 
 										
 									</ul>
 									<div class="user-details row">
-										<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author}}</a> <span class="lnr lnr-user"></span></p>
+										<p class="user-name col-lg-12 col-md-12 col-6"><a href="{% url 'blog:author' author_username=post.author.username %}">{{post.author}}</a> <span class="lnr lnr-user"></span></p>
 										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"D M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.contact_views}}</a> <span class="lnr lnr-eye"></span></p>
 										<p class="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span class="lnr lnr-bubble"></span></p>						
@@ -116,25 +119,30 @@
 							{% endfor %}														
 		                    <nav class="blog-pagination justify-content-center d-flex">
 		                        <ul class="pagination">
+								{% if posts.has_previous %}
 		                            <li class="page-item">
-		                                <a href="#" class="page-link" aria-label="Previous">
+		                                <a href="?page={{ posts.previous_page_number }}" class="page-link" aria-label="Previous">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-left"></span>
 		                                    </span>
 		                                </a>
 		                            </li>
-		                            <li class="page-item"><a href="#" class="page-link">01</a></li>
-		                            <li class="page-item active"><a href="#" class="page-link">02</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">03</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">04</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">09</a></li>
-		                            <li class="page-item">
-		                                <a href="#" class="page-link" aria-label="Next">
+									{% endif %}
+									{% for i in posts.paginator.page_range %}
+									{% if posts.number == i %}
+		                                <li class="page-item active"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+										{% else %}
+									<li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                                    {% endif %}
+		                            {% endfor %}
+									{% if posts.has_next %}
+		                                <a href="?page={{ posts.next_page_number }}" class="page-link" aria-label="Next">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-right"></span>
 		                                    </span>
 		                                </a>
 		                            </li>
+									{% endif %}
 		                        </ul>
 		                    </nav>
 						</div>
@@ -142,9 +150,9 @@
 							<div class="widget-wrap">
 								{% include 'blog/blog-search.html' %}
 							    {% include 'blog/blog-writer.html' %}
-								{% latestposts %}
+								{% popularposts %}
 								{% include 'blog/blog-ads.html' %}
-								{% include 'blog/blog-post-category.html' %}
+								{% postcategory %}
                                 {% include 'blog/blog-newsletter.html' %}
 								{% include 'blog/blog-tags.html' %}
 							</div>

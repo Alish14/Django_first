@@ -1,6 +1,5 @@
 
-from unicodedata import name
-from django.urls import path,include
+from django.urls import path
 from website.views import *
 app_name="website"
 
