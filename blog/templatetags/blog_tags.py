@@ -1,5 +1,5 @@
 from django import template
-from django.shortcuts import get_object_or_404, render
+
 
 from blog.models import Post,Category
 
@@ -17,7 +17,7 @@ def popularposts():
 
 @register.inclusion_tag("website/website_latest_post.html")
 def latestposts():
-    posts=Post.objects.filter(status=1).order_by('published_date')[:6]
+    posts=Post.objects.filter(status=1).order_by('published_date').reverse()[:6]
     categories=Category.objects.all()
     return {'posts':posts,'categories':categories}
 
