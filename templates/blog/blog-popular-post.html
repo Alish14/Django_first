@@ -1,3 +1,4 @@
+{% load humanize %} 
 {% load static %}
 {% load blog_tags %}
 <div class="single-sidebar-widget popular-post-widget">
@@ -15,6 +16,7 @@
                     <h6>{{post.title}}</h6>
                 </a>
                 <p>{{post.published_date|date:"d M Y"}}</p>
+                <p>{{post.published_date| naturalday}}</p>
             </div>
         </div>
         {% endfor %}

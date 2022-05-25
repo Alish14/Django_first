@@ -1,3 +1,4 @@
+{% load humanize %} 
 {% load static %}
 {% load blog_tags %}
 <section class="recent-blog-area section-gap">
@@ -36,7 +37,8 @@
                         <p>
                             {{p.content | truncatewords:5}}
                         </p>
-                        <h6 class="date">{{p.published_date|date:"D M Y" }}</h6>
+                        <h6 class="date">{{p.published_date| naturalday}}</h6>
+                        
                     </div>
                 </div>
                 

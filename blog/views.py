@@ -1,15 +1,19 @@
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render
-from blog.models import Post
+from blog.models import Post,comment
 from django.db.models import F
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 def blog_view(request,**kwargs):
-    posts=Post.objects.filter(published_date__lte=timezone.now())
+    posts=Post.objects.filter(status=1).order_by('-published_date')
     if kwargs.get('cat_name') != None:
-        posts=Post.objects.filter(category__name=kwargs['cat_name'])
+        posts=posts.filter(category__name=kwargs['cat_name'])
     if kwargs.get('author_username') != None:
-        posts=Post.objects.filter(author__username=kwargs['author_username'])
+        posts=posts.filter(author__username=kwargs['author_username'])
+    if kwargs.get('tag_name') != None:
+        posts=posts.filter(tags__name__in=[kwargs['tag_name']])
+
+
     posts=Paginator(posts,3)
     try:
         page_number=request.GET.get('page')
@@ -33,8 +37,9 @@ def blog_single(request,pid):
         has_previous=False
     next_pid=pid+1
     previous_pid=pid-1
+    comments=comment.objects.filter(post=pid,approved=True).order_by('-created_date')
     posts=get_object_or_404(Post,pk=pid,status=1)
-    context={'post':posts,'pid':pid,'has_next':has_next,'has_previous':has_previous,'next_pid':next_pid,'previous_pid':previous_pid}
+    context={'post':posts,'pid':pid,'has_next':has_next,'has_previous':has_previous,'next_pid':next_pid,'previous_pid':previous_pid,'comments':comments}
     return render(request,'blog/blog-single.html',context)
 def test(request):
     # posts=Post.objects.filter()
@@ -53,6 +58,7 @@ def blog_search(request):
             posts=posts.filter(content__contains=s)
     context={'posts':posts}
     return render(request,'blog/blog-home.html',context)
+
 
 
 
