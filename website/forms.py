@@ -1,7 +1,6 @@
 from django import forms
 from website.models import Contact,Newsletter
 from captcha.fields import CaptchaField
-from django.forms import Textarea
 
 
 class ContactForm(forms.ModelForm):    
