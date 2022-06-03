@@ -1,8 +1,13 @@
-from django.utils import timezone
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render,redirect
 from blog.models import Post,comment
 from django.db.models import F
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from blog.forms import CommentForm
+from django.contrib import messages
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
+
 
 def blog_view(request,**kwargs):
     posts=Post.objects.filter(status=1).order_by('-published_date')
@@ -26,21 +31,33 @@ def blog_view(request,**kwargs):
     return render(request,'blog/blog-home.html',context)
 def blog_single(request,pid):
     posts=Post.objects.filter(pk=pid).update(contact_views=F("contact_views")+1)
-    posts=Paginator(posts,3)
+    if request.method=='POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,"your comment submited")
+  
+        else:
+            messages.add_message(request,messages.ERROR,"your comment did'nt submited")
     if Post.objects.filter(pk=pid+1).exists():
-        has_next=True
+            has_next=True
     else:
-        has_next=False
+            has_next=False
     if Post.objects.filter(pk=pid-1).exists():
-        has_previous=True
+            has_previous=True
     else:
-        has_previous=False
+            has_previous=False
+    form=CommentForm()
     next_pid=pid+1
     previous_pid=pid-1
-    comments=comment.objects.filter(post=pid,approved=True).order_by('-created_date')
-    posts=get_object_or_404(Post,pk=pid,status=1)
-    context={'post':posts,'pid':pid,'has_next':has_next,'has_previous':has_previous,'next_pid':next_pid,'previous_pid':previous_pid,'comments':comments}
-    return render(request,'blog/blog-single.html',context)
+    if not Post.login_require:
+        comments=comment.objects.filter(post=pid,approved=True).order_by('-created_date')
+        posts=get_object_or_404(Post,pk=pid,status=1)
+        context={'post':posts,'pid':pid,'has_next':has_next,'has_previous':has_previous,'next_pid':next_pid,'previous_pid':previous_pid,'comments':comments,'form':form}
+        return render(request,'blog/blog-single.html',context)
+    else:
+        return HttpResponseRedirect(reverse('accounts:login'))
+
 def test(request):
     # posts=Post.objects.filter()
     posts=Post.objects.filter(status=1)
