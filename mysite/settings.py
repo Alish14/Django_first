@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from telnetlib import AUTHENTICATION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,8 +25,16 @@ SECRET_KEY = 'django-insecure-jj#_fh7$+ab)oc^s=mmld$nt!vs9(($0&020qb9v#kf1xfq)13
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+AUTH_USER_MODEL= 'accounts.Account'
+AUTHENTICATION_BACKENDS= (
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    'accounts.backend.EmailBackend'
+    # 'accounts.backend.CaseInsensitiveModelBackend'
+)
 
 
 # Application definition
@@ -49,6 +58,9 @@ INSTALLED_APPS = [
     'django_summernote',
     'captcha',
     'django.contrib.admin',
+    'accounts',
+    
+    
 
     ]
 #sites framewor
