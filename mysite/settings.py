@@ -17,16 +17,6 @@ from telnetlib import AUTHENTICATION
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jj#_fh7$+ab)oc^s=mmld$nt!vs9(($0&020qb9v#kf1xfq)13'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ALLOWED_HOSTS = []
 AUTH_USER_MODEL= 'accounts.Account'
@@ -107,15 +97,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -154,11 +136,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [
-    BASE_DIR / "statics",
-]
+
  
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'

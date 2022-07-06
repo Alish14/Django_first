@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from accounts.models import Account
 
 class accountAdmin(UserAdmin):
-    list_display=('email','username','date_joined','last_login','is_admin','is_staff')
+    list_display=('email','username','date_joined','last_login','is_admin','is_staff','id')
     search_feild=('email','username')
     readonly_feilds=('id','date_joined','last_login')
     filter_horizontal=()
